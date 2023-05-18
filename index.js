@@ -15,36 +15,32 @@ const allFunctions = {
     sale: 0,
 
 
-	start:  {
-		asking: function() {
+	start: function () {
+		allFunctions.asking();
+		allFunctions.numberCheck();
+		allFunctions.logger();
+		allFunctions.getAllServicePrices();
+		allFunctions.getFullPrice();
+		allFunctions.rollback();
+	},
+
+	asking: function() {
+		// do {
+		// 	allFunctions.title = prompt('Как называется ваш проект?', 'Калькулятор верстки');
+		// } while (allFunctions.title === null || allFunctions.title.trim() === "" || allFunctions.title.startsWith('1') || allFunctions.title.startsWith('2') || allFunctions.title.startsWith('3') || allFunctions.title.startsWith('4') || allFunctions.title.startsWith('5') || allFunctions.title.startsWith('6') || allFunctions.title.startsWith('7') || allFunctions.title.startsWith('8') || allFunctions.title.startsWith('9') || allFunctions.title.startsWith('0'))
+		do {
 			allFunctions.title = prompt('Как называется ваш проект?', 'Калькулятор верстки');
+		} while (allFunctions.title === null || allFunctions.title.trim() === "" || /^[^0-9].*/.test(allFunctions.title) === false);
+		
+		do {
 			allFunctions.screens = prompt('Какие типы экранов надо разработать?', "мобильный");
+		} while (allFunctions.screens === null || allFunctions.screens.trim() === "")
 
-			do {
-				allFunctions.screenPrice = +prompt('Сколько будет стоить данная работа?', '10000');
-			} while (!allFunctions.screenPrice);
+		do {
+			allFunctions.screenPrice = +prompt('Сколько будет стоить данная работа?', '10000');
+		} while (!Number(allFunctions.screenPrice));
 
-			allFunctions.adaptive = confirm('Нужен ли адаптив на сайте?');
-		}
-	},
-
-	logger: function() {
-		for (let key in allFunctions) {
-			console.log(key + ': ' + allFunctions[key]);
-		}
-		console.log(allFunctions.title);
-		console.log(allFunctions.screens);
-		console.log(allFunctions.screenPrice);
-		console.log(allFunctions.adaptive);		  
-	},
-
-
-	getAllServicePrices: function () {
-		return Number(allFunctions.servicePrice1) + Number(allFunctions.servicePrice2);
-	},
-
-	getFullPrice: function () {
-		return allFunctions.screenPrice + allFunctions.getAllServicePrices();
+		allFunctions.adaptive = confirm('Нужен ли адаптив на сайте?');
 	},
 
 
@@ -62,9 +58,30 @@ const allFunctions = {
 		} while (isNaN(allFunctions.servicePrice2) || allFunctions.servicePrice2.trim() === "" || allFunctions.servicePrice2 === null);
 	},
 
+	logger: function() {
+		// for (let key in allFunctions) {
+		// 	console.log(key + ': ' + allFunctions[key]);
+		// }
+		console.log(allFunctions.title);
+		console.log(allFunctions.screens);
+		console.log(allFunctions.adaptive);
+		console.log('Дополнительная услуга 1: ' + allFunctions.service1 + ' по цене ' + allFunctions.servicePrice1 + ' рублей');
+		console.log('Дополнительная услуга 2: ' + allFunctions.service2 + ' по цене ' + allFunctions.servicePrice2 + ' рублей');	  
+	},
+
+
+	getAllServicePrices: function () {
+		return Number(allFunctions.servicePrice1) + Number(allFunctions.servicePrice2);
+	},
+
+	getFullPrice: function () {
+		return allFunctions.screenPrice + allFunctions.getAllServicePrices();
+	},
+
 	// расчет скидки
 	rollback: function () {
 		allFunctions.fullPrice = Number(allFunctions.getFullPrice()); // добавляем строку с присвоением значения fullPrice
+		console.log(allFunctions.getFullPrice());
 		if (allFunctions.fullPrice >= 30000) {
 			console.log('Даем скидку в 10%');
 		} else if (allFunctions.fullPrice >= 15000) {
@@ -77,9 +94,4 @@ const allFunctions = {
 	}
 };
 
-allFunctions.start.asking();
-allFunctions.logger();
-allFunctions.getAllServicePrices();
-allFunctions.getFullPrice();
-allFunctions.rollback();
-allFunctions.numberCheck();
+allFunctions.start();
